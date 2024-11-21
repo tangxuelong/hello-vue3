@@ -40,7 +40,7 @@
             price: 20000
         }
     }
-    // 情况五：监听上述对象数组，可以对多个数据进行监视，监视的是对象地址，若要监视对象内部数据的变化，需要开启deep属性
+    // 情况四：监视【reactive】定义的对象类型数据上的属性 需要监听一个getter函数，开启deep属性
     watch([()=>person.car,()=>person.name], (newValue, oldValue) => {
         console.log(newValue, oldValue)
     }, {deep: true})
