@@ -1,47 +1,38 @@
 <template>
     <div>
-        <div>name: {{ person.name }}</div>
-        <div>age: {{ person.age }}</div>
-        <button @click="changeName">修改名字</button>
-        <button @click="changeAge">修改年龄</button>
-        <button @click="changePerson">修改人</button>
-        <button @click="changeCar">修改车</button>
+        <div>需求：当水温达到60度，或者水位超过80cm，给服务器发请求</div>
+        <div>水温：{{ waterTemperature }}</div>
+        <div>水位：{{ waterLevel }}</div>
+        <button @click="changeWaterTemperature">修改水温</button>
+        <button @click="changeWaterLevel">修改水位</button>
     </div>
 </template>
 
 <script setup lang="ts" name="Person234">
-    import {reactive, watch} from 'vue'
+    import {ref, watchEffect} from 'vue'
 
-    let person = reactive({
-        name: '张三',
-        age: 18,
-        car: {
-            brand: '宝马',
-            price: 10000
+    let waterTemperature = ref(10)
+    let waterLevel = ref(10)
+
+    function changeWaterTemperature (){
+        waterTemperature.value += 10
+    }
+
+    function changeWaterLevel (){
+        waterLevel.value += 10
+    }
+
+    // watch([waterTemperature, waterLevel], (value) => {
+    //     let [waterTemperature, waterLevel] = value
+
+    //     if (waterTemperature >= 60 || waterLevel >= 80){
+    //         console.log('请求服务器')
+    //     }
+    // })
+
+    watchEffect(()=>{
+        if (waterTemperature.value >= 60 || waterLevel.value >= 80){
+            console.log('请求服务器')
         }
     })
-
-    function changeName (){
-        person.name += '~'
-    }
-
-    function changeAge (){
-        person.age += 1
-    }
-    function changePerson (){
-        Object.assign(person, {
-            name: '李四',
-            age: 20
-        })
-    }
-    function changeCar (){
-        person.car = {
-            brand: '奔驰',
-            price: 20000
-        }
-    }
-    // 情况五：监听上述对象数组，可以对多个数据进行监视，监视的是对象地址，若要监视对象内部数据的变化，需要开启deep属性
-    watch([()=>person.car,()=>person.name], (newValue, oldValue) => {
-        console.log(newValue, oldValue)
-    }, {deep: true})
 </script>
